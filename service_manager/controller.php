@@ -302,7 +302,7 @@ class controller {
         print $msg;
 
         if (config::$log_dir){
-            $logfile = config::$log_dir . "/log_" . date("Ym") . ".log";
+            $logfile = config::$log_dir . "/log_" . date("Ymd") . ".log";
             error_log($msg, 3, $logfile);
         }
     }
