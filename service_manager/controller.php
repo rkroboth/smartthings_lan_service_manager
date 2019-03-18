@@ -63,10 +63,24 @@ class controller {
             controller::$shutting_down = true;
         });
 
+        $watchdog_ping_file = "/tmp/service_manager_watchdog_ping";
+        $last_watchdog_ping_time = null;
+        $watchdog_ping_interval = 15;
+
         // main loop
         while (true) {
 
             usleep(10000); // run loop 100 times per second
+
+            // every 30 seconds touch a tmp file so the watchdog script will know we're still running.
+            // if the tmp file doesn't get touched for a few minutes, the watchdog script reboots the machine
+            if (
+                $last_watchdog_ping_time === null
+                || time() >= $last_watchdog_ping_time + $watchdog_ping_interval
+            ){
+                touch($watchdog_ping_file);
+                $last_watchdog_ping_time = time();
+            }
 
             // sync the device list if we just started running, or if the app was just installed,
             // both of which would set this flag to false
