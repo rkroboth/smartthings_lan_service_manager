@@ -217,6 +217,9 @@ class controller {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-length:' . strlen($json_encoded_payload))
+        );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json_encoded_payload);
 
         $response = curl_exec($ch);
